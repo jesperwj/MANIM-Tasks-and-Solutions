@@ -1,1 +1,1 @@
-# MANIM-Tasks-and-Solutions
+# MANIM Tasks and Solutions
