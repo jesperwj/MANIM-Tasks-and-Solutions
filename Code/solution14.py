@@ -76,6 +76,7 @@ class Solution14(Scene):
         # Added because Replacement Transform wasnt working correctly
         overdamped_signal1 = axes.plot(overdamped, color=second_color)
         underdamped_signal1 = axes.plot(underdamped, color=second_color)
+        underdamped_signal2 = axes.plot(underdamped, color=second_color)
 
         self.play(
             ReplacementTransform(underdamped_signal, overdamped_signal),
@@ -94,6 +95,12 @@ class Solution14(Scene):
             slider_knob.animate.move_to(slider_bar.get_right()),
             slider_label1.animate.set_color(LIGHT_GRAY),
             slider_label2.animate.set_color(second_color))
+        self.wait(2)
+        self.play(
+            ReplacementTransform(overdamped_signal1, underdamped_signal2),
+            slider_knob.animate.move_to(slider_bar.get_left()),
+            slider_label1.animate.set_color(second_color),
+            slider_label2.animate.set_color(LIGHT_GRAY))
         self.wait(4)
 
         self.play(FadeOut(underdamped_label_2, 
@@ -102,6 +109,6 @@ class Solution14(Scene):
                           slider_label1, 
                           slider_label2, 
                           axes, 
-                          overdamped_signal1,
+                          underdamped_signal2,
                           labels))
 
