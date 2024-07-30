@@ -5,18 +5,21 @@ import math
 class Question14(Scene):
     def construct(self):
 
+        # To change the whole color scheme easier
+        second_color = YELLOW
+
         # Defining axes
         axes = Axes(
-            x_range=[0, 3, 0.5],
-            y_range=[0, 1.2, 0.2],
-            axis_config={"color": LIGHT_GRAY, "include_numbers": True},
+            x_range=[0, 3, 5],
+            y_range=[0, 1.2, 5],
+            axis_config={"color": LIGHT_GRAY},
             y_length = 6,
             x_length = 10
-        ).move_to(0.2*LEFT+0.3*DOWN).scale(0.85)
+        ).move_to(1.5*LEFT+0.1*DOWN).scale(0.8)
         labels = axes.get_axis_labels(x_label="t", y_label="y(t)").scale(0.95)
 
         # Parameters and functions
-        alpha = -1
+        alpha = -2
         beta = -2
         omega = 5
         
@@ -24,12 +27,12 @@ class Question14(Scene):
         underdamped = lambda x: math.exp(beta*x) * math.cos(omega*x)
 
         # Creating signals on axes
-        combined_signal = axes.plot(underdamped, color=PURPLE)
+        combined_signal = axes.plot(underdamped, color=second_color)
         combined_label = VGroup(
-            MathTex(r"\text{The following plot corresponds to}",color=PURPLE),
-            MathTex(r"\text{a response from which type of system?}",color=PURPLE),
-            MathTex(r"\text{\: a) underdamped}",color=LIGHT_GRAY),
-            MathTex(r"\text{\: b) overdamped}",color=LIGHT_GRAY),
+            MathTex(r"\text{Which type of system is represented}",color=second_color),
+            MathTex(r"\text{by the response on the graph?}",color=second_color),
+            MathTex(r"\text{\: a) underdamped system}",color=LIGHT_GRAY),
+            MathTex(r"\text{\: b) overdamped system}",color=LIGHT_GRAY),
             ).arrange(DOWN, center=False, aligned_edge=LEFT).scale(0.9)
         combined_label.move_to(1.5*UP+2*RIGHT)
 
