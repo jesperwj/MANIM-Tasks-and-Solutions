@@ -43,14 +43,14 @@ class Solution17(Scene):
         solution1 = VGroup(
             MathTex(r"\text{Equilibria are all the zeros of the first derivative.}", color = first_color),
             MathTex(r"\dot{x}=x^2-2x-3",color=second_color),
-            MathTex(r"\text{thus both -3 an 1 are the equilibria.}", color=first_color)
+            MathTex(r"\text{thus both 3 and -1 are the equilibria.}", color=first_color)
         ).arrange(DOWN).shift(2.5*UP).scale(0.8)
 
         # Create the question and answer choices as a VGroup
         solution2 = VGroup(
             MathTex(r"\text{Equilibria are all the zeros of the first derivative.}", color = first_color),
             MathTex(r"\dot{x}=(x+1)(x-3)",color=second_color),
-            MathTex(r"\text{thus both 3 an -1 are the equilibria.}", color=first_color)
+            MathTex(r"\text{thus both 3 and -1 are the equilibria.}", color=first_color)
         ).arrange(DOWN).shift(2.5*UP).scale(0.8)
 
         # Animating the question
