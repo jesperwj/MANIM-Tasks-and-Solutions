@@ -24,10 +24,6 @@ class Solution23(Scene):
         ).arrange(DOWN).move_to(0.5*DOWN).scale(0.90).arrange(DOWN, center=False, aligned_edge=LEFT)
         
         equation_origin = VGroup(
-            MathTex(r"\dot{{y}} = a\cdot0 + b\cdot0")
-        ).arrange(DOWN).move_to(0.5*DOWN).scale(0.90).arrange(DOWN, center=False, aligned_edge=LEFT)
-        
-        equation_origin_zero = VGroup(
             MathTex(r"\dot{{y}} = a\cdot0 + b\cdot0 = 0")
         ).arrange(DOWN).move_to(0.5*DOWN+0.1*RIGHT).scale(0.90).arrange(DOWN, center=False, aligned_edge=LEFT)
         
@@ -50,7 +46,4 @@ class Solution23(Scene):
         self.wait(0.5)
         
         self.play(TransformMatchingTex(equation_text_scalar, equation_origin))
-        self.wait(1)
-        
-        self.play(TransformMatchingTex(equation_origin, equation_origin_zero))
         self.wait(2)
