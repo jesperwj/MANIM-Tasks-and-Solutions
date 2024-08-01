@@ -11,8 +11,11 @@ class Question23(Scene):
         ).arrange(DOWN).move_to(1.5*UP).scale(0.90)
         
         equation_text = VGroup(
-            MathTex(r"\dot{y} = Ay + Bu")
+            MathTex(r"\dot{y} = Ay + Bu", substrings_to_isolate = "y, u")
         ).arrange(DOWN).move_to(0*DOWN).scale(0.90)
+        
+        equation_text[0].set_color_by_tex("y", ORANGE)
+        equation_text[0].set_color_by_tex("u", BLUE)
         
         options_text = VGroup(
             MathTex(r"\text{A: True}"),
