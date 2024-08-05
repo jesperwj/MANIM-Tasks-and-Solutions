@@ -131,15 +131,22 @@ class Solution31(Scene):
         self.play(Create(question[5][1]))
         self.wait(0.5)
         self.play(Create(question[5][2]))
-        self.wait(5)
-        self.play(question[5][1].animate.set_color(WHITE))
+        self.wait(3)
+        self.play(question[5][1].animate.set_color(YELLOW))
+        self.wait(0.1)
+        self.play(question[5][1].animate.set_color(first_color))
+        self.wait(0.1)
+        self.play(question[5][1].animate.set_color(YELLOW))
+        self.wait(2)
 
         self.play(FadeOut(
             question,
             axes1,
             axes2,
             graph_h,
-            graph_u
+            graph_u,
+            label1,
+            label2
         ))
         
         # Solution part
