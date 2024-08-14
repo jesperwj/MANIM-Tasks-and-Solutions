@@ -180,7 +180,7 @@ class Solution34(Scene):
 
         # Animating text of the solution text
 
-        self.play(Write(solution[0]))
+        self.play(Create(solution[0]))
         self.wait(1)
         self.play(Create(solution[1]))
         self.wait(0.8)
