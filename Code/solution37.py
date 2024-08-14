@@ -2,7 +2,7 @@ from manim import *
 import numpy as np
 import math
 
-class Question37(Scene):
+class Solution37(Scene):
     def construct(self):
 
         # Color scheme set up
