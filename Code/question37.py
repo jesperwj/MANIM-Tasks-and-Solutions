@@ -39,11 +39,21 @@ class Question37(Scene):
                     color=second_color, font_size=size_font),
             MathTex(r"\text{C: they are equivalent}", 
                     color=second_color, font_size=size_font),
+            MathTex(r"\text{D: I don't know}", 
+                    color=second_color, font_size=size_font),
         ).arrange(DOWN, center=False, aligned_edge=LEFT)
         VGroup(question, answers).arrange(DOWN, center=False, aligned_edge=LEFT)
         answers.shift(RIGHT+0.1*DOWN)
         VGroup(question, answers).move_to(ORIGIN)
 
+        all_text =VGroup(question, answers)
+        box = Rectangle(
+            height=all_text.get_height()+1, 
+            width=all_text.get_width()+1, 
+            fill_color=None, 
+            fill_opacity=0.0, 
+            stroke_color=second_color)
+        
         #Animation
 
         self.play(Create(question[0]))
@@ -58,6 +68,8 @@ class Question37(Scene):
         self.play(Create(answers[1]))
         self.wait(1)
         self.play(Create(answers[2]))
+        self.wait(1)
+        self.play(Create(answers[3]))
         self.wait(2)
 
         self.play(FadeOut(question, answers, box))

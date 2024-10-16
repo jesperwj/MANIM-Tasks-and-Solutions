@@ -23,6 +23,8 @@ class Solution40(Scene):
                     color=second_color, font_size=size_font),
             MathTex(r"\text{C: it depends}", 
                     color=second_color, font_size=size_font),
+            MathTex(r"\text{D: I don't know}", 
+                    color=second_color, font_size=size_font)
         ).arrange(DOWN, center=False, aligned_edge=LEFT)
         all_text =VGroup(question, answers)
         all_text.arrange(DOWN, center=False, aligned_edge=LEFT)
@@ -99,7 +101,6 @@ class Solution40(Scene):
         self.play(Create(equation[0]))
         self.play(FadeIn(equation[1]))
         self.wait(3)
-
         self.play(Create(solution2))
         self.wait(3)
         self.play(FadeOut(solution, condition, solution2))

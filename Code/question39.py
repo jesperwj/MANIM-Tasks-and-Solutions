@@ -23,6 +23,8 @@ class Question39(Scene):
                     color=second_color, font_size=size_font),
             MathTex(r"\text{C: it depends}", 
                     color=second_color, font_size=size_font),
+            MathTex(r"\text{D: I don't know}", 
+                    color=second_color, font_size=size_font)
         ).arrange(DOWN, center=False, aligned_edge=LEFT)
         all_text =VGroup(question, answers)
         all_text.arrange(DOWN, center=False, aligned_edge=LEFT)
@@ -47,5 +49,7 @@ class Question39(Scene):
         self.play(Create(answers[1]))
         self.wait(1)
         self.play(Create(answers[2]))
+        self.wait(1)
+        self.play(Create(answers[3]))
         self.wait(3)
         self.play(FadeOut(question, answers, box))

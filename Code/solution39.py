@@ -23,6 +23,8 @@ class Solution39(Scene):
                     color=second_color, font_size=size_font),
             MathTex(r"\text{C: it depends}", 
                     color=second_color, font_size=size_font),
+            MathTex(r"\text{D: I don't know}", 
+                    color=second_color, font_size=size_font)
         ).arrange(DOWN, center=False, aligned_edge=LEFT)
         all_text =VGroup(question, answers)
         all_text.arrange(DOWN, center=False, aligned_edge=LEFT)
