@@ -48,5 +48,4 @@ class Question38(Scene):
         self.wait(1)
         self.play(Create(answers[2]))
         self.wait(3)
-
         self.play(FadeOut(question, answers, box))
