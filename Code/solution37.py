@@ -1,7 +1,20 @@
 from manim import *
 import numpy as np
 import math
+'''
+basis we are using not are we using
 
+animation that we have to do 
+
+domain and codomain 
+mona lisa thing
+image domain and in the codomain that is warping
+
+define:
+
+
+add i do not know to answers
+'''
 class Solution37(Scene):
     def construct(self):
 
@@ -64,7 +77,7 @@ class Solution37(Scene):
         solution = VGroup(
             MathTex(r"\text{A linear transformation can be expressed by a specific matrix A}", 
                     color=second_color, font_size=size_font),
-            MathTex(r"\text{if we choose which basis are we using for describing the domain}", 
+            MathTex(r"\text{if we choose which basis we are using for describing the domain}", 
                     color=second_color, font_size=size_font),
             MathTex(r"\text{and the codomain.}", 
                     color=second_color, font_size=size_font)

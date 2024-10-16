@@ -2,6 +2,30 @@ from manim import *
 import numpy as np
 import math
 
+'''
+Commentslets 
+take a generic A n*n 
+has n eigs from 1 to n
+focus on generic lambda i 
+then boxes
+
+end
+we need to make clear that two different eigs can be associated to same space
+to eg vectors have to be linearly independant
+
+animation that stresses this
+
+cant same eigen vector in the beginning
+
+whenever we have one vector it cannot be 
+eig vector for two eig values
+cannot be stretched in two different ways
+we can stress this in the beginning
+
+eigenvectros of different eigs are lin independant 
+then the solution
+'''
+
 class Solution38(Scene):
     def construct(self):
 
