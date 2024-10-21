@@ -486,6 +486,11 @@ class Solution38(Scene):
                     color=second_color, font_size=size_font)
         ).arrange(DOWN,buff = 0.5).to_edge(UP).shift(0.2*DOWN)
         
+        VGroup(solution[3], inequality,
+               box_geometric,additional_text_geometric,
+               box_algebraic,additional_text_algebraic).to_edge(UP)
+        VGroup(solution[0], solution[1],
+               solution2[0], solution2[1]).to_edge(DOWN)
         # Animation
         self.play(Create(solution[3]))
         self.wait(1)
@@ -546,6 +551,8 @@ class Solution38(Scene):
         self.wait(2)
         self.play(Uncreate(solution[0:2]))
         self.wait(1.5)
+
+        #Adding text 
         self.play(Create(solution2[0]))
         self.wait(2)
         self.play(Create(solution2[1]))
