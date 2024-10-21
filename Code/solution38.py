@@ -81,6 +81,313 @@ class Solution38(Scene):
         # Solution part -----------------------------------------------------------------
         size_font = DEFAULT_FONT_SIZE*0.8
     
+        # Initial concept explanation-------------------------------------------------------
+        title = MathTex(r"\text{Eigenvalues and Eigenvectors}", font_size=50, color=WHITE
+            ).to_edge(UP)
+        
+
+        description0 = VGroup(
+            MathTex(r"\text{Let's consider a generic matrix A of size } n \times n, \text{with eigenvalues } \lambda_1,\lambda_2,...\lambda_n. ", 
+                    font_size=35, color=WHITE),
+            MathTex(r"\cdot \text{ Let } \lambda_i \text{ be a generic eigenvalue of A.}", 
+                    font_size=35, color=WHITE),
+            VGroup(MathTex(r"v_i", 
+                    font_size=38, color=YELLOW),
+                    MathTex(r"\text{ - eigenvector corresponding to }", 
+                    font_size=35, color=LIGHT_GRAY),
+                    MathTex(r"\lambda_i", 
+                    font_size=38, color=YELLOW),).arrange(RIGHT),
+            MathTex(r"\lambda_i \text{ determines how } v_i \text{ streatches after}", 
+                    font_size=35, color=WHITE),
+            MathTex(r"\text{applying the transformation A.}", 
+                    font_size=35, color=WHITE),
+            VGroup(MathTex(r"Av_i", 
+                    font_size=38, color=YELLOW),
+                    MathTex(r"=", 
+                    font_size=38, color=WHITE),
+                    MathTex(r"\lambda_iv_i", 
+                    font_size=38, color=YELLOW)).arrange(RIGHT),
+        ).arrange(DOWN, aligned_edge = LEFT).to_corner(UL).shift(DOWN)
+        
+        # Position set up
+        description0[2::].shift(0.3*DOWN)
+        description0[3::].shift(DOWN)
+        description0[5::].shift(1.5*RIGHT)
+
+       
+        # Limits for number plane
+        limit = [3.4,2.4]
+        number_plane = NumberPlane(
+            x_range=[-limit[0], limit[0], 1],  # Set the x-axis range (min, max, step)
+            y_range=[-limit[1], limit[1], 1],  # Set the y-axis range (min, max, step)
+            axis_config={"stroke_color": WHITE},  # Customize axis color
+            background_line_style={
+                "stroke_color": BLUE,  # Grid color
+                "stroke_width": 1,
+                "stroke_opacity":0.5, 
+            }
+        ).scale(0.85).set_z_index(-1)
+
+        # Skewed grid
+        skew_matrix = np.array([[1, 0.5], [0, 1]])  # Skew transformation matrix
+        transformed_plane = NumberPlane(
+            x_range=[-limit[0], limit[0], 1],  # Set the x-axis range (min, max, step)
+            y_range=[-limit[1], limit[1], 1],  # Set the y-axis range (min, max, step)
+            axis_config={"color": BLUE,"stroke_color": WHITE},  # Customize axis color
+            background_line_style={
+                "stroke_color": BLUE,  # Grid color
+                "stroke_width": 1,
+                "stroke_opacity":0.5, 
+            }).scale(0.85).apply_matrix(skew_matrix).set_z_index(-1)
+        after_transf_text =MathTex(r"\text{After transformation}", 
+                    font_size=35, color=YELLOW).next_to(transformed_plane, UP)
+
+        #Move all down
+        VGroup(number_plane,transformed_plane).to_corner(DR, buff = 0.3).shift(0.5*UP)
+        transformed_plane_copy = transformed_plane.copy()
+        transformed_plane_copy2 = transformed_plane.copy()   
+        number_plane_copy = number_plane.copy()
+        number_plane_copy2 = number_plane.copy()
+
+        # Eigenvector
+        eigenvector1 = Arrow(start=number_plane.c2p(0, 0), end=number_plane.c2p(1, 1), color=YELLOW, buff=0)
+        eigenvector1_copy = eigenvector1.copy()
+        eigenvector1_copy2 = eigenvector1.copy()
+        eigenvector_label1 = MathTex(r"v_i", color=YELLOW).next_to(eigenvector1.get_end(), RIGHT)
+        eigenvector_label1_copy = eigenvector_label1.copy()
+        eigenvector_label1_copy2 = eigenvector_label1.copy()
+        eigenvector2 = Arrow(start=number_plane.c2p(0, 0), end=number_plane.c2p(1, 0), color=ORANGE, buff=0)
+        eigenvector2_copy = eigenvector2.copy()
+        eigenvector_label2 = MathTex(r"v_j", color=ORANGE).next_to(eigenvector2.get_end(), DOWN)
+        eigenvector_label2_copy = eigenvector_label2.copy()
+        
+        # Spans
+        span1 = Line(start=number_plane.c2p(-limit[1], -limit[1]),
+                    end=number_plane.c2p(limit[1], limit[1]),
+                    color = YELLOW).set_opacity(0.5).set_z_index(-1)
+        span_label1 = MathTex(r"\text{span(}v_i\text{)}}", color=YELLOW).scale(0.8).next_to(span1.get_end(), RIGHT*1.2)
+        
+        span2 = Line(start=number_plane.c2p(-limit[0], 0),
+                    end=number_plane.c2p(limit[0], 0),
+                    color = ORANGE).set_opacity(0.5).set_z_index(-1)
+        span_label2 = MathTex(r"\text{span(}v_j\text{)}}", color=ORANGE).scale(0.8).next_to(span2.get_end(), DOWN*1.2)
+
+        span3 = Line(start=number_plane.c2p(-limit[1], -limit[1]),
+                    end=number_plane.c2p(limit[1], limit[1]),
+                    color = ORANGE).set_opacity(0.5).set_z_index(-1)
+        span_label3 = MathTex(r"\text{span(}v_j\text{)}}", color=ORANGE).scale(0.8).next_to(span3.get_end(), DOWN*1.2)
+        
+
+        # Transformed eigenvector
+        lambda1= 1.7
+        lambda2 = -0.9
+        transformed_eigenvector1 = Arrow(start=transformed_plane.c2p(0, 0), end=number_plane.c2p(1*lambda1, 1*lambda1), color=YELLOW, buff=0)
+        transformed_eigenvector1_copy = transformed_eigenvector1.copy()
+        transformed_eigenvector1_copy2 = transformed_eigenvector1.copy()
+        transformed_label1 = MathTex(r"Av_i", color=YELLOW).next_to(transformed_eigenvector1.get_end(), RIGHT)
+        transformed_label1_copy = transformed_label1.copy()
+        transformed_label11 = MathTex(r"\lambda_iv_i", color=YELLOW).next_to(transformed_eigenvector1.get_end(), RIGHT)
+        transformed_label11_copy= transformed_label11.copy()
+        transformed_eigenvector2 = Arrow(start=transformed_plane.c2p(0, 0), end=number_plane.c2p(1*lambda2, 0*lambda2), color=ORANGE, buff=0)
+        transformed_eigenvector2_copy = transformed_eigenvector2
+        transformed_label2 = MathTex(r"Av_j", color=ORANGE).next_to(transformed_eigenvector2.get_end(), DOWN)
+        transformed_label22 = MathTex(r"\lambda_jv_j", color=ORANGE).next_to(transformed_eigenvector2.get_end(), DOWN)
+        
+        # Animations 
+        self.play(Create(title,run_time=2))
+        self.wait(1)
+        self.play(Create(description0[0],run_time=3))
+        self.wait(1)
+        self.play(Create(description0[1],run_time=2))
+        self.wait(1)
+        self.play(Create(description0[2],run_time=1.5))
+        self.wait(1)
+        self.play(Create(number_plane,run_time = 0.5))
+        self.wait(1)
+        self.play(Create(eigenvector1,run_time = 0.5), 
+                  Write(eigenvector_label1))
+        self.wait(1)
+        self.play(Create(span1), Create(span_label1))
+        self.wait(1)
+        self.play(Create(description0[3],run_time = 1.5))
+        self.wait(0.5)
+        self.play(Create(description0[4],run_time = 1.5))
+        self.wait(1)
+        self.play(Create(description0[5],run_time = 1.5))
+        self.wait(1)
+        self.play(ReplacementTransform(number_plane, transformed_plane),
+                  ReplacementTransform(eigenvector1,transformed_eigenvector1),
+                  ReplacementTransform(eigenvector_label1,transformed_label1))
+        self.play(Indicate(transformed_label1,scale_factor = 1.2))
+        self.wait(1)
+        self.play( ReplacementTransform(transformed_label1,transformed_label11))
+        self.play(Indicate(transformed_label11,scale_factor = 1.2))
+        self.wait(1)
+
+        # Part two
+        self.play(FadeOut(description0[3:5]))
+        self.play(description0[5].animate.shift(2.2*UP))
+        self.play(ReplacementTransform(transformed_plane, number_plane_copy),
+                  ReplacementTransform(transformed_eigenvector1,eigenvector1_copy),
+                  ReplacementTransform(transformed_label11,eigenvector_label1_copy))
+        self.wait(1)
+
+        description1 = VGroup(
+            MathTex(r"\text{Let's consider a generic matrix A of size } n \times n, \text{with eigenvalues } \lambda_1,\lambda_2,...\lambda_n. ", 
+                    font_size=35, color=WHITE),
+            MathTex(r"\text{Let } \lambda_i \text{ be a generic eigenvalue of A.}", 
+                    font_size=35, color=WHITE),
+            VGroup(MathTex(r"v_i", 
+                    font_size=38, color=YELLOW),
+                    MathTex(r"\text{ - eigenvector corresponding to }", 
+                    font_size=35, color=WHITE),
+                    MathTex(r"\lambda_i", 
+                    font_size=38, color=YELLOW),).arrange(RIGHT),
+            MathTex(r"\cdot \text{ Now consider a different eigenvalue }\lambda_j", 
+                    font_size=35, color=WHITE),
+            VGroup(MathTex(r"\lambda_j", 
+                    font_size=38, color=ORANGE),
+                    MathTex(r"\neq", 
+                    font_size=35, color=WHITE),
+                    MathTex(r"\lambda_i", 
+                    font_size=38, color=YELLOW),).arrange(RIGHT),
+            VGroup(MathTex(r"v_j", 
+                    font_size=38, color=ORANGE),
+                    MathTex(r"\text{ - eigenvector corresponding to }", 
+                    font_size=35, color=LIGHT_GRAY),
+                    MathTex(r"\lambda_j", 
+                    font_size=38, color=ORANGE),).arrange(RIGHT),
+            VGroup(MathTex(r"Av_j", 
+                    font_size=38, color=ORANGE),
+                    MathTex(r"=", 
+                    font_size=38, color=WHITE),
+                    MathTex(r"\lambda_jv_j", 
+                    font_size=38, color=ORANGE)).arrange(RIGHT),
+        ).arrange(DOWN, aligned_edge = LEFT).to_corner(UL).shift(DOWN)
+        
+        description1[2::].shift(0.3*DOWN)
+        description1[3::].shift(DOWN)
+        description1[4].shift(1.75*RIGHT)
+        description1[6].shift(1.5*RIGHT)
+
+
+        # Animations part two
+        self.play(Create(description1[3],run_time = 1.5))
+        self.wait(0.5)
+        self.play(Create(description1[4],run_time = 1.5))
+        self.wait(1)
+        self.play(Create(description1[5],run_time = 1.5))
+        self.wait(1)
+        self.play(Create(eigenvector2,run_time = 0.5), 
+                  Write(eigenvector_label2))
+        self.wait(1)
+        self.play(Create(span2), Create(span_label2))
+        self.wait(1)
+        self.play(Create(description1[6]))
+
+        self.play(ReplacementTransform(number_plane_copy, transformed_plane_copy),
+                  ReplacementTransform(eigenvector1_copy,transformed_eigenvector1_copy),
+                  ReplacementTransform(eigenvector_label1_copy,transformed_label1_copy),
+                  ReplacementTransform(eigenvector2,transformed_eigenvector2),
+                  ReplacementTransform(eigenvector_label2,transformed_label2))
+        self.wait(1)
+        self.play( ReplacementTransform(transformed_label1_copy,transformed_label11_copy))
+        self.play(Indicate(transformed_label11_copy,scale_factor = 1.2))
+        self.wait(1)
+        self.play( ReplacementTransform(transformed_label2,transformed_label22))
+        self.play(Indicate(transformed_label22,scale_factor = 1.2, color= ORANGE))
+        self.wait(1)
+
+
+
+        #Part three
+        self.play(FadeOut(description0[1:3],description0[5], description1[3::]))
+        self.wait(1)
+        self.play(ReplacementTransform(transformed_plane_copy, number_plane_copy2),
+                  ReplacementTransform(transformed_eigenvector1_copy,eigenvector1_copy2),
+                  ReplacementTransform(transformed_label11_copy,eigenvector_label1_copy2),
+                  ReplacementTransform(transformed_eigenvector2,eigenvector2_copy),
+                  ReplacementTransform(transformed_label22,eigenvector_label2_copy))
+        self.wait(1)
+        transformed_eigenvector1 = Arrow(start=transformed_plane.c2p(0, 0), 
+                                        end=number_plane_copy2.c2p(1*lambda1, 1*lambda1), 
+                                        color=YELLOW, buff=0)
+        transformed_eigenvector2 = Arrow(start=transformed_plane.c2p(0, 0), 
+                                        end=number_plane_copy2.c2p(1*lambda2, 1*lambda2), 
+                                        color=ORANGE, buff=0)
+
+        description2 = VGroup(
+            MathTex(r"\text{Let's consider a generic matrix A of size } n \times n, \text{with eigenvalues } \lambda_1,\lambda_2,...\lambda_n. ", 
+                    font_size=35, color=WHITE),
+            MathTex(r"\text{Eigenvectors of two different eigenvalues}", 
+                    font_size=35, color=WHITE),
+            MathTex(r"\text{must be linearly independant!}", 
+                    font_size=35, color=WHITE),
+            MathTex(r"\text{One eigenvector cannot be associated to}", 
+                    font_size=35, color=WHITE),
+            MathTex(r"\text{two different eigenvalues, because it}", 
+                    font_size=35, color=WHITE),
+            MathTex(r"\text{cannot be stretched in two different ways.}", 
+                    font_size=35, color=WHITE),
+        ).arrange(DOWN, aligned_edge = LEFT).to_corner(UL).shift(DOWN)
+
+        description2[1:].shift(DOWN)
+        description2[3:].shift(DOWN)
+
+        #Animations
+        self.play(Create(description2[1],run_time=3))
+        self.wait(0.5)
+        self.play(Create(description2[2],run_time=2))
+        self.wait(0.5)
+        self.play(FadeOut(eigenvector_label1_copy2, eigenvector_label2_copy))
+
+        self.play(Rotate(VGroup(span2, eigenvector2_copy), 
+                         angle=PI/4, run_time=2, 
+                         about_point=number_plane_copy2.c2p(0, 0)))
+        #Adding cross to indicate it is wrong
+        cross = Cross(eigenvector2_copy, 
+                      stroke_color=RED_D, 
+                      stroke_width=12).rotate(-PI / 10).scale(1.2)
+        self.play(Create(cross))
+        self.wait(1)
+        self.play(FadeOut(cross))
+        self.play(Rotate(VGroup(span2, eigenvector2_copy), 
+                         angle=PI, run_time=3, 
+                         about_point=number_plane_copy2.c2p(0, 0)))
+        #Adding cross to indicate it is wrong
+        cross = Cross(eigenvector2_copy, 
+                      stroke_color=RED_D, 
+                      stroke_width=12).rotate(PI / 10).scale(1.2)
+        self.play(Create(cross))
+        self.wait(1)
+        self.play(FadeOut(cross))
+        self.play(Rotate(VGroup(span2, eigenvector2_copy), 
+                         angle=3* PI/4, run_time=2, 
+                         about_point=number_plane_copy2.c2p(0, 0)))
+        self.wait(1)
+
+
+        # After transformation
+        self.play(Create(description2[3],run_time=1.5),
+                  Rotate(VGroup(span2, eigenvector2_copy), 
+                         angle=PI/4, run_time=2, 
+                         about_point=number_plane_copy2.c2p(0, 0)))
+        self.play(FadeOut(span_label2,eigenvector2_copy,span2))
+        self.play(Create(description2[4],run_time=2))
+        self.wait(0.5)
+        
+        self.play(Create(description2[5],run_time=2),
+                  ReplacementTransform(number_plane_copy2, transformed_plane_copy2),
+                  ReplacementTransform(eigenvector1_copy2,VGroup(transformed_eigenvector1,transformed_eigenvector2)))
+        self.wait(2)
+        self.play(FadeOut(title,
+                        description0[0],
+                        description2[1::],
+                        transformed_plane_copy2,
+                        VGroup(transformed_eigenvector1,transformed_eigenvector2),
+                        span_label1,
+                        span1))
+        #OLD PART -----------------------------------------------------------------------------------------------
         geometric = VGroup(
             MathTex(r"\text{geometric multiplicity}", 
                     color=fourth_color, font_size=size_font),
@@ -196,35 +503,36 @@ class Solution38(Scene):
         self.wait(3)
 
         # Additional explenation on geometric multiplicity
-        self.play(Create(box_geometric))
+        self.play(Create(box_geometric,run_time = 1))
         self.wait(0.8)
         self.play(Create(additional_text_geometric[1]))
-        self.wait(0.8)
+        self.wait(0.5)
         self.play(Create(additional_text_geometric[2]))
-        self.wait(0.8)
+        self.wait(0.5)
         self.play(Create(additional_text_geometric[3]))
-        self.wait(0.8)
+        self.wait(0.5)
         self.play(Create(additional_text_geometric[4]))
         self.wait(1)
 
         # Additional explenation on algebraic multiplicity
-        self.play(Create(box_algebraic))
+        self.play(Create(box_algebraic, run_time = 1))
         self.wait(0.8)
         self.play(Create(additional_text_algebraic[1]))
-        self.wait(0.8)
+        self.wait(0.5)
         self.play(Create(additional_text_algebraic[2]))
-        self.wait(0.8)
+        self.wait(0.5)
         self.play(Create(additional_text_algebraic[3]))
-        self.wait(0.8)
+        self.wait(0.5)
         self.play(Create(additional_text_algebraic[4]))
         self.wait(3)
 
         # Animating text
-        self.play(Create(solution[0]))
+        self.play(Create(solution[0],run_time = 2))
         self.wait(2)
-        self.play(Create(solution[1]))
+        self.play(Create(solution[1],run_time = 2))
         self.wait(2)
         self.play(GrowFromCenter(inequality[4]))
+        self.play(Indicate(inequality[4], color = WHITE))
 
         self.wait(2)
         self.play(FadeOut(VGroup(inequality[3], box_algebraic,additional_text_algebraic)))
