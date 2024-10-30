@@ -3,27 +3,12 @@ import numpy as np
 import math
 
 '''
-Comments
-take a generic A n*n 
-has n eigs from 1 to n
-focus on generic lambda i 
-then boxes
+put also value of A and lambdas and eigenvectors. Independent
 
-end
-we need to make clear that two different eigs can be associated to same space
-to eg vectors have to be linearly independant
+same eiogenvector cann different eigenvalues.
+any element of a single eigenspace of one eigenvalue cannot be a part of another space in th ersame time
+if orange belongs to span of vi it cannot belong to span of vj because it cannot be stretched in two ways.
 
-animation that stresses this
-
-cant same eigen vector in the beginning
-
-whenever we have one vector it cannot be 
-eig vector for two eig values
-cannot be stretched in two different ways
-we can stress this in the beginning
-
-eigenvectros of different eigs are lin independant 
-then the solution
 '''
 
 class Solution38(Scene):
@@ -116,20 +101,33 @@ class Solution38(Scene):
 
        
         # Limits for number plane
-        limit = [3.4,2.4]
+        limit = [3,2]
         number_plane = NumberPlane(
             x_range=[-limit[0], limit[0], 1],  # Set the x-axis range (min, max, step)
-            y_range=[-limit[1], limit[1], 1],  # Set the y-axis range (min, max, step)
+            y_range=[-limit[1]-1, limit[1]+1, 1],  # Set the y-axis range (min, max, step)
             axis_config={"stroke_color": WHITE},  # Customize axis color
             background_line_style={
                 "stroke_color": BLUE,  # Grid color
                 "stroke_width": 1,
                 "stroke_opacity":0.5, 
             }
-        ).scale(0.85).set_z_index(-1)
+        ).scale(0.7).set_z_index(-1)
 
         # Skewed grid
-        skew_matrix = np.array([[1, 0.5], [0, 1]])  # Skew transformation matrix
+        skew_matrix = np.array([[1, 1], [0, 1.5]])  # Skew transformation matrix
+        eigenvalues, eigenvectors = np.linalg.eig(skew_matrix)
+        [lambda2, lambda1] = eigenvalues
+        two, one = eigenvectors[:, 0], eigenvectors[:, 1]
+
+        matrix_example = VGroup(
+            MathTex(r"A = \begin{bmatrix} 1 & 1 \\ 0 & 1.5 \end{bmatrix}", 
+                    font_size=35, color=LIGHT_GRAY),
+            MathTex(r"\lambda_1 = 1.5 ,  \lambda_2 = 1", 
+                    font_size=35, color=LIGHT_GRAY),
+            MathTex(r"v_1 = \begin{bmatrix} 2 \\ 1 \end{bmatrix} ,  v_2 = \begin{bmatrix} 1 \\ 0 \end{bmatrix}", 
+                    font_size=35, color=LIGHT_GRAY)
+        ).arrange(DOWN).shift(RIGHT*1.5+UP*0.8).scale(0.65)
+
         transformed_plane = NumberPlane(
             x_range=[-limit[0], limit[0], 1],  # Set the x-axis range (min, max, step)
             y_range=[-limit[1], limit[1], 1],  # Set the y-axis range (min, max, step)
@@ -138,62 +136,60 @@ class Solution38(Scene):
                 "stroke_color": BLUE,  # Grid color
                 "stroke_width": 1,
                 "stroke_opacity":0.5, 
-            }).scale(0.85).apply_matrix(skew_matrix).set_z_index(-1)
-        after_transf_text =MathTex(r"\text{After transformation}", 
-                    font_size=35, color=YELLOW).next_to(transformed_plane, UP)
-
-        #Move all down
-        VGroup(number_plane,transformed_plane).to_corner(DR, buff = 0.3).shift(0.5*UP)
+            }).scale(0.7).apply_matrix(skew_matrix).set_z_index(-1)
+        
+        # Move all down
+        VGroup(number_plane,transformed_plane).to_corner(DR, buff = 0.3).shift(0.5*UP).shift(LEFT)
         transformed_plane_copy = transformed_plane.copy()
         transformed_plane_copy2 = transformed_plane.copy()   
         number_plane_copy = number_plane.copy()
         number_plane_copy2 = number_plane.copy()
 
-        # Eigenvector
-        eigenvector1 = Arrow(start=number_plane.c2p(0, 0), end=number_plane.c2p(1, 1), color=YELLOW, buff=0)
+        # Eigenvectors
+        eigenvector1 = Arrow(start=number_plane.c2p(0, 0), end=number_plane.c2p(2,1), color=YELLOW, buff=0)
+        eigenvector_label1 = MathTex(r"v_i", color=YELLOW).next_to(eigenvector1.get_end(), RIGHT).shift(0.5*UP)
+        eigenvector2 = Arrow(start=number_plane.c2p(0, 0), end=number_plane.c2p(1, 0), color=ORANGE, buff=0)
+        eigenvector_label2 = MathTex(r"v_j", color=ORANGE).next_to(eigenvector2.get_end(), DOWN)
+        
+        # Copies
         eigenvector1_copy = eigenvector1.copy()
         eigenvector1_copy2 = eigenvector1.copy()
-        eigenvector_label1 = MathTex(r"v_i", color=YELLOW).next_to(eigenvector1.get_end(), RIGHT)
         eigenvector_label1_copy = eigenvector_label1.copy()
         eigenvector_label1_copy2 = eigenvector_label1.copy()
-        eigenvector2 = Arrow(start=number_plane.c2p(0, 0), end=number_plane.c2p(1, 0), color=ORANGE, buff=0)
+
         eigenvector2_copy = eigenvector2.copy()
-        eigenvector_label2 = MathTex(r"v_j", color=ORANGE).next_to(eigenvector2.get_end(), DOWN)
         eigenvector_label2_copy = eigenvector_label2.copy()
         
         # Spans
-        span1 = Line(start=number_plane.c2p(-limit[1], -limit[1]),
-                    end=number_plane.c2p(limit[1], limit[1]),
+        span1 = Line(start=number_plane.c2p(-limit[0], -limit[0]/2),
+                    end=number_plane.c2p(limit[0], limit[0]/2),
                     color = YELLOW).set_opacity(0.5).set_z_index(-1)
-        span_label1 = MathTex(r"\text{span(}v_i\text{)}}", color=YELLOW).scale(0.8).next_to(span1.get_end(), RIGHT*1.2)
+        span_label1 = MathTex(r"\text{span(}v_i\text{)}}", 
+                              font_size=35, color=YELLOW).scale(0.65).next_to(span1.get_end(), RIGHT*1.5+0.9*UP)
         
         span2 = Line(start=number_plane.c2p(-limit[0], 0),
                     end=number_plane.c2p(limit[0], 0),
                     color = ORANGE).set_opacity(0.5).set_z_index(-1)
-        span_label2 = MathTex(r"\text{span(}v_j\text{)}}", color=ORANGE).scale(0.8).next_to(span2.get_end(), DOWN*1.2)
-
-        span3 = Line(start=number_plane.c2p(-limit[1], -limit[1]),
-                    end=number_plane.c2p(limit[1], limit[1]),
-                    color = ORANGE).set_opacity(0.5).set_z_index(-1)
-        span_label3 = MathTex(r"\text{span(}v_j\text{)}}", color=ORANGE).scale(0.8).next_to(span3.get_end(), DOWN*1.2)
-        
+        span_label2 = MathTex(r"\text{span(}v_j\text{)}}", 
+                              font_size=35, color=ORANGE).scale(0.65).next_to(span2.get_end(), DOWN*1.2+0.7*RIGHT)
 
         # Transformed eigenvector
-        lambda1= 1.7
-        lambda2 = -0.9
-        transformed_eigenvector1 = Arrow(start=transformed_plane.c2p(0, 0), end=number_plane.c2p(1*lambda1, 1*lambda1), color=YELLOW, buff=0)
-        transformed_eigenvector1_copy = transformed_eigenvector1.copy()
-        transformed_eigenvector1_copy2 = transformed_eigenvector1.copy()
-        transformed_label1 = MathTex(r"Av_i", color=YELLOW).next_to(transformed_eigenvector1.get_end(), RIGHT)
-        transformed_label1_copy = transformed_label1.copy()
-        transformed_label11 = MathTex(r"\lambda_iv_i", color=YELLOW).next_to(transformed_eigenvector1.get_end(), RIGHT)
-        transformed_label11_copy= transformed_label11.copy()
+        transformed_eigenvector1 = Arrow(start=transformed_plane.c2p(0, 0), end=number_plane.c2p(2*lambda1, 1*lambda1), color=YELLOW, buff=0)
+        transformed_label1 = MathTex(r"Av_i", color=YELLOW).next_to(transformed_eigenvector1.get_end(), RIGHT).shift(DOWN)
+        transformed_label11 = MathTex(r"\lambda_iv_i", color=YELLOW).next_to(transformed_eigenvector1.get_end(), RIGHT).shift(DOWN)
+
         transformed_eigenvector2 = Arrow(start=transformed_plane.c2p(0, 0), end=number_plane.c2p(1*lambda2, 0*lambda2), color=ORANGE, buff=0)
-        transformed_eigenvector2_copy = transformed_eigenvector2
         transformed_label2 = MathTex(r"Av_j", color=ORANGE).next_to(transformed_eigenvector2.get_end(), DOWN)
         transformed_label22 = MathTex(r"\lambda_jv_j", color=ORANGE).next_to(transformed_eigenvector2.get_end(), DOWN)
+
+        # Copies
+        transformed_eigenvector1_copy = transformed_eigenvector1.copy()
+        transformed_eigenvector1_copy2 = transformed_eigenvector1.copy()
+        transformed_label1_copy = transformed_label1.copy()
+        transformed_label11_copy= transformed_label11.copy()
+        transformed_eigenvector2_copy = transformed_eigenvector2
         
-        # Animations 
+        # Animations part one
         self.play(Create(title,run_time=2))
         self.wait(1)
         self.play(Create(description0[0],run_time=3))
@@ -203,6 +199,7 @@ class Solution38(Scene):
         self.play(Create(description0[2],run_time=1.5))
         self.wait(1)
         self.play(Create(number_plane,run_time = 0.5))
+        self.play(Create(matrix_example))
         self.wait(1)
         self.play(Create(eigenvector1,run_time = 0.5), 
                   Write(eigenvector_label1))
@@ -224,7 +221,9 @@ class Solution38(Scene):
         self.play(Indicate(transformed_label11,scale_factor = 1.2))
         self.wait(1)
 
-        # Part two
+
+
+        #------------> Part two <----------------
         self.play(FadeOut(description0[3:5]))
         self.play(description0[5].animate.shift(2.2*UP))
         self.play(ReplacementTransform(transformed_plane, number_plane_copy),
@@ -299,9 +298,9 @@ class Solution38(Scene):
         self.wait(1)
 
 
-
-        #Part three
-        self.play(FadeOut(description0[1:3],description0[5], description1[3::]))
+        #--------------> Part three <-------------
+        self.play(FadeOut(description0[1:3],description0[5], description1[3::]),
+                        FadeOut(matrix_example))
         self.wait(1)
         self.play(ReplacementTransform(transformed_plane_copy, number_plane_copy2),
                   ReplacementTransform(transformed_eigenvector1_copy,eigenvector1_copy2),
@@ -310,10 +309,10 @@ class Solution38(Scene):
                   ReplacementTransform(transformed_label22,eigenvector_label2_copy))
         self.wait(1)
         transformed_eigenvector1 = Arrow(start=transformed_plane.c2p(0, 0), 
-                                        end=number_plane_copy2.c2p(1*lambda1, 1*lambda1), 
+                                        end=number_plane_copy2.c2p(2*lambda1, 1*lambda1), 
                                         color=YELLOW, buff=0)
         transformed_eigenvector2 = Arrow(start=transformed_plane.c2p(0, 0), 
-                                        end=number_plane_copy2.c2p(1*lambda2, 1*lambda2), 
+                                        end=number_plane_copy2.c2p(2*lambda2, 1*lambda2), 
                                         color=ORANGE, buff=0)
 
         description2 = VGroup(
@@ -321,7 +320,7 @@ class Solution38(Scene):
                     font_size=35, color=WHITE),
             MathTex(r"\text{Eigenvectors of two different eigenvalues}", 
                     font_size=35, color=WHITE),
-            MathTex(r"\text{must be linearly independant!}", 
+            MathTex(r"\text{must be linearly independent!}", 
                     font_size=35, color=WHITE),
             MathTex(r"\text{One eigenvector cannot be associated to}", 
                     font_size=35, color=WHITE),
@@ -342,12 +341,12 @@ class Solution38(Scene):
         self.play(FadeOut(eigenvector_label1_copy2, eigenvector_label2_copy))
 
         self.play(Rotate(VGroup(span2, eigenvector2_copy), 
-                         angle=PI/4, run_time=2, 
+                         angle=PI*0.14758, run_time=2, 
                          about_point=number_plane_copy2.c2p(0, 0)))
         #Adding cross to indicate it is wrong
         cross = Cross(eigenvector2_copy, 
                       stroke_color=RED_D, 
-                      stroke_width=12).rotate(-PI / 10).scale(1.2)
+                      stroke_width=14).rotate(-PI / 10).scale(1.2)
         self.play(Create(cross))
         self.wait(1)
         self.play(FadeOut(cross))
@@ -357,12 +356,12 @@ class Solution38(Scene):
         #Adding cross to indicate it is wrong
         cross = Cross(eigenvector2_copy, 
                       stroke_color=RED_D, 
-                      stroke_width=12).rotate(PI / 10).scale(1.2)
+                      stroke_width=14).rotate(PI / 10).scale(1.2)
         self.play(Create(cross))
         self.wait(1)
         self.play(FadeOut(cross))
         self.play(Rotate(VGroup(span2, eigenvector2_copy), 
-                         angle=3* PI/4, run_time=2, 
+                         angle=PI*0.85242, run_time=2, 
                          about_point=number_plane_copy2.c2p(0, 0)))
         self.wait(1)
 
@@ -370,7 +369,7 @@ class Solution38(Scene):
         # After transformation
         self.play(Create(description2[3],run_time=1.5),
                   Rotate(VGroup(span2, eigenvector2_copy), 
-                         angle=PI/4, run_time=2, 
+                         angle=PI*0.14758, run_time=2, 
                          about_point=number_plane_copy2.c2p(0, 0)))
         self.play(FadeOut(span_label2,eigenvector2_copy,span2))
         self.play(Create(description2[4],run_time=2))
@@ -438,7 +437,7 @@ class Solution38(Scene):
         # Additional explanation
         additional_text_geometric = VGroup(
             geometric,
-            MathTex(r"\bullet \text{ number of independant}", 
+            MathTex(r"\bullet \text{ number of independent}", 
                     color=second_color, font_size=size_font*0.9),
             MathTex(r"\text{eigenvectors corresponding }", 
                     color=second_color, font_size=size_font*0.9),
@@ -480,13 +479,13 @@ class Solution38(Scene):
             stroke_color=third_color).move_to(additional_text_algebraic)
 
         solution2 = VGroup(
-            MathTex(r"\text{In total, there are } n \text{ independant eigenvectors.}", 
+            MathTex(r"\text{In total, there are } n \text{ independent eigenvectors.}", 
                     color=second_color, font_size=size_font),
             MathTex(r"\text{A basis formed by these eigenvectors will diagonalize the matrix.}", 
                     color=second_color, font_size=size_font)
         ).arrange(DOWN,buff = 0.5).to_edge(UP).shift(0.2*DOWN)
         
-        VGroup(solution[3], inequality,
+        VGroup(solution[3:4],
                box_geometric,additional_text_geometric,
                box_algebraic,additional_text_algebraic).to_edge(UP)
         VGroup(solution[0], solution[1],
