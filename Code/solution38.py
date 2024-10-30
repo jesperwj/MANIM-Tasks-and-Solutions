@@ -2,12 +2,6 @@ from manim import *
 import numpy as np
 import math
 
-'''
-
-break
-inequalities 
-now lets prove the question between two parsmove i
-'''
 
 class Solution38(Scene):
     def construct(self):
@@ -386,7 +380,7 @@ class Solution38(Scene):
         text_break = VGroup(
             MathTex(r"\text{Let's go back to the original question:}", 
                     color=LIGHT_GRAY, font_size=size_font),
-            MathTex(r"\text{If a } nxn \text{ square matrix has } n \text{ different eigenvalues}", 
+            MathTex(r"\text{If a } n \times n \text{ square matrix has } n \text{ different eigenvalues}", 
                     color=WHITE, font_size=size_font),
            MathTex(r"\text{is it diagonalizable?}", 
                     color=WHITE, font_size=size_font),
