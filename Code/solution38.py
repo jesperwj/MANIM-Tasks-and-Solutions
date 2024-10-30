@@ -3,7 +3,6 @@ import numpy as np
 import math
 
 '''
-put also value of A and lambdas and eigenvectors. Independent
 
 same eiogenvector cann different eigenvalues.
 any element of a single eigenspace of one eigenvalue cannot be a part of another space in th ersame time
@@ -126,7 +125,7 @@ class Solution38(Scene):
                     font_size=35, color=LIGHT_GRAY),
             MathTex(r"v_1 = \begin{bmatrix} 2 \\ 1 \end{bmatrix} ,  v_2 = \begin{bmatrix} 1 \\ 0 \end{bmatrix}", 
                     font_size=35, color=LIGHT_GRAY)
-        ).arrange(DOWN).shift(RIGHT*1.5+UP*0.8).scale(0.65)
+        ).arrange(DOWN).shift(RIGHT*1.5+UP*0.8).scale(0.7)
 
         transformed_plane = NumberPlane(
             x_range=[-limit[0], limit[0], 1],  # Set the x-axis range (min, max, step)
@@ -165,13 +164,13 @@ class Solution38(Scene):
                     end=number_plane.c2p(limit[0], limit[0]/2),
                     color = YELLOW).set_opacity(0.5).set_z_index(-1)
         span_label1 = MathTex(r"\text{span(}v_i\text{)}}", 
-                              font_size=35, color=YELLOW).scale(0.65).next_to(span1.get_end(), RIGHT*1.5+0.9*UP)
+                              font_size=35, color=YELLOW).scale(0.7).next_to(span1.get_end(), RIGHT*1.5+0.9*UP)
         
         span2 = Line(start=number_plane.c2p(-limit[0], 0),
                     end=number_plane.c2p(limit[0], 0),
                     color = ORANGE).set_opacity(0.5).set_z_index(-1)
         span_label2 = MathTex(r"\text{span(}v_j\text{)}}", 
-                              font_size=35, color=ORANGE).scale(0.65).next_to(span2.get_end(), DOWN*1.2+0.7*RIGHT)
+                              font_size=35, color=ORANGE).scale(0.7).next_to(span2.get_end(), DOWN*1.2+0.7*RIGHT)
 
         # Transformed eigenvector
         transformed_eigenvector1 = Arrow(start=transformed_plane.c2p(0, 0), end=number_plane.c2p(2*lambda1, 1*lambda1), color=YELLOW, buff=0)
@@ -344,9 +343,8 @@ class Solution38(Scene):
                          angle=PI*0.14758, run_time=2, 
                          about_point=number_plane_copy2.c2p(0, 0)))
         #Adding cross to indicate it is wrong
-        cross = Cross(eigenvector2_copy, 
-                      stroke_color=RED_D, 
-                      stroke_width=14).rotate(-PI / 10).scale(1.2)
+        cross = Cross(stroke_color=RED_D, 
+                      stroke_width=30).scale(0.5).move_to(eigenvector2_copy).rotate(-PI / 10)
         self.play(Create(cross))
         self.wait(1)
         self.play(FadeOut(cross))
@@ -354,9 +352,8 @@ class Solution38(Scene):
                          angle=PI, run_time=3, 
                          about_point=number_plane_copy2.c2p(0, 0)))
         #Adding cross to indicate it is wrong
-        cross = Cross(eigenvector2_copy, 
-                      stroke_color=RED_D, 
-                      stroke_width=14).rotate(PI / 10).scale(1.2)
+        cross = Cross(stroke_color=RED_D, 
+                      stroke_width=30).move_to(eigenvector2_copy).scale(0.5).rotate(PI / 10)
         self.play(Create(cross))
         self.wait(1)
         self.play(FadeOut(cross))
