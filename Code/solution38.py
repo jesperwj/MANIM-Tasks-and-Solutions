@@ -4,10 +4,9 @@ import math
 
 '''
 
-same eiogenvector cann different eigenvalues.
-any element of a single eigenspace of one eigenvalue cannot be a part of another space in th ersame time
-if orange belongs to span of vi it cannot belong to span of vj because it cannot be stretched in two ways.
-
+break
+inequalities 
+now lets prove the question between two parsmove i
 '''
 
 class Solution38(Scene):
@@ -20,9 +19,10 @@ class Solution38(Scene):
         fourth_color = ORANGE
         size_font =  DEFAULT_FONT_SIZE*0.75
         
-        question = VGroup( MathTex(r"\text{If a } n \times n \text{ square matrix has } n \text{ different eigenvalues}", 
+        question = VGroup( 
+                MathTex(r"\text{If a } n \times n \text{ square matrix has } n \text{ different eigenvalues}", 
                     color=first_color, font_size=size_font),
-                    MathTex(r"\text{then it is diagonizable.}",
+                MathTex(r"\text{then it is diagonalizable.}",
                     color=first_color, font_size=size_font)
                     ).arrange(DOWN, center=False, aligned_edge=LEFT)
         answers = VGroup(
@@ -81,7 +81,7 @@ class Solution38(Scene):
                     font_size=35, color=LIGHT_GRAY),
                     MathTex(r"\lambda_i", 
                     font_size=38, color=YELLOW),).arrange(RIGHT),
-            MathTex(r"\lambda_i \text{ determines how } v_i \text{ streatches after}", 
+            MathTex(r"\lambda_i \text{ determines how } v_i \text{ stretches after}", 
                     font_size=35, color=WHITE),
             MathTex(r"\text{applying the transformation A.}", 
                     font_size=35, color=WHITE),
@@ -146,7 +146,7 @@ class Solution38(Scene):
 
         # Eigenvectors
         eigenvector1 = Arrow(start=number_plane.c2p(0, 0), end=number_plane.c2p(2,1), color=YELLOW, buff=0)
-        eigenvector_label1 = MathTex(r"v_i", color=YELLOW).next_to(eigenvector1.get_end(), RIGHT).shift(0.5*UP)
+        eigenvector_label1 = MathTex(r"v_i", color=YELLOW).next_to(eigenvector1.get_end(), UP)
         eigenvector2 = Arrow(start=number_plane.c2p(0, 0), end=number_plane.c2p(1, 0), color=ORANGE, buff=0)
         eigenvector_label2 = MathTex(r"v_j", color=ORANGE).next_to(eigenvector2.get_end(), DOWN)
         
@@ -164,7 +164,7 @@ class Solution38(Scene):
                     end=number_plane.c2p(limit[0], limit[0]/2),
                     color = YELLOW).set_opacity(0.5).set_z_index(-1)
         span_label1 = MathTex(r"\text{span(}v_i\text{)}}", 
-                              font_size=35, color=YELLOW).scale(0.7).next_to(span1.get_end(), RIGHT*1.5+0.9*UP)
+                              font_size=35, color=YELLOW).scale(0.7).next_to(span1.get_end(), RIGHT*1.5+0.3*DOWN)
         
         span2 = Line(start=number_plane.c2p(-limit[0], 0),
                     end=number_plane.c2p(limit[0], 0),
@@ -174,8 +174,8 @@ class Solution38(Scene):
 
         # Transformed eigenvector
         transformed_eigenvector1 = Arrow(start=transformed_plane.c2p(0, 0), end=number_plane.c2p(2*lambda1, 1*lambda1), color=YELLOW, buff=0)
-        transformed_label1 = MathTex(r"Av_i", color=YELLOW).next_to(transformed_eigenvector1.get_end(), RIGHT).shift(DOWN)
-        transformed_label11 = MathTex(r"\lambda_iv_i", color=YELLOW).next_to(transformed_eigenvector1.get_end(), RIGHT).shift(DOWN)
+        transformed_label1 = MathTex(r"Av_i", color=YELLOW).next_to(transformed_eigenvector1.get_end(), UP)
+        transformed_label11 = MathTex(r"\lambda_iv_i", color=YELLOW).next_to(transformed_eigenvector1.get_end(), UP)
 
         transformed_eigenvector2 = Arrow(start=transformed_plane.c2p(0, 0), end=number_plane.c2p(1*lambda2, 0*lambda2), color=ORANGE, buff=0)
         transformed_label2 = MathTex(r"Av_j", color=ORANGE).next_to(transformed_eigenvector2.get_end(), DOWN)
@@ -189,13 +189,13 @@ class Solution38(Scene):
         transformed_eigenvector2_copy = transformed_eigenvector2
         
         # Animations part one
-        self.play(Create(title,run_time=2))
+        self.play(Create(title,run_time=1))
         self.wait(1)
-        self.play(Create(description0[0],run_time=3))
+        self.play(Create(description0[0],run_time=1.5))
         self.wait(1)
-        self.play(Create(description0[1],run_time=2))
+        self.play(Create(description0[1],run_time=1))
         self.wait(1)
-        self.play(Create(description0[2],run_time=1.5))
+        self.play(Create(description0[2],run_time=1))
         self.wait(1)
         self.play(Create(number_plane,run_time = 0.5))
         self.play(Create(matrix_example))
@@ -205,11 +205,11 @@ class Solution38(Scene):
         self.wait(1)
         self.play(Create(span1), Create(span_label1))
         self.wait(1)
-        self.play(Create(description0[3],run_time = 1.5))
+        self.play(Create(description0[3],run_time = 1))
         self.wait(0.5)
-        self.play(Create(description0[4],run_time = 1.5))
+        self.play(Create(description0[4],run_time = 1))
         self.wait(1)
-        self.play(Create(description0[5],run_time = 1.5))
+        self.play(Create(description0[5],run_time = 1))
         self.wait(1)
         self.play(ReplacementTransform(number_plane, transformed_plane),
                   ReplacementTransform(eigenvector1,transformed_eigenvector1),
@@ -270,11 +270,11 @@ class Solution38(Scene):
 
 
         # Animations part two
-        self.play(Create(description1[3],run_time = 1.5))
+        self.play(Create(description1[3],run_time = 1))
         self.wait(0.5)
-        self.play(Create(description1[4],run_time = 1.5))
+        self.play(Create(description1[4],run_time = 1))
         self.wait(1)
-        self.play(Create(description1[5],run_time = 1.5))
+        self.play(Create(description1[5],run_time = 1))
         self.wait(1)
         self.play(Create(eigenvector2,run_time = 0.5), 
                   Write(eigenvector_label2))
@@ -333,9 +333,9 @@ class Solution38(Scene):
         description2[3:].shift(DOWN)
 
         #Animations
-        self.play(Create(description2[1],run_time=3))
-        self.wait(0.5)
-        self.play(Create(description2[2],run_time=2))
+        self.play(Create(description2[1],run_time=1.5))
+        self.wait(0.3)
+        self.play(Create(description2[2],run_time=1))
         self.wait(0.5)
         self.play(FadeOut(eigenvector_label1_copy2, eigenvector_label2_copy))
 
@@ -344,21 +344,21 @@ class Solution38(Scene):
                          about_point=number_plane_copy2.c2p(0, 0)))
         #Adding cross to indicate it is wrong
         cross = Cross(stroke_color=RED_D, 
-                      stroke_width=30).scale(0.5).move_to(eigenvector2_copy).rotate(-PI / 10)
+                      stroke_width=20).move_to(eigenvector2_copy).scale(0.5).rotate(PI / 10)
         self.play(Create(cross))
-        self.wait(1)
+        self.wait(0.7)
         self.play(FadeOut(cross))
         self.play(Rotate(VGroup(span2, eigenvector2_copy), 
-                         angle=PI, run_time=3, 
+                         angle=PI, run_time=2, 
                          about_point=number_plane_copy2.c2p(0, 0)))
         #Adding cross to indicate it is wrong
         cross = Cross(stroke_color=RED_D, 
-                      stroke_width=30).move_to(eigenvector2_copy).scale(0.5).rotate(PI / 10)
+                      stroke_width=20).move_to(eigenvector2_copy).scale(0.5).rotate(PI / 10)
         self.play(Create(cross))
-        self.wait(1)
+        self.wait(0.7)
         self.play(FadeOut(cross))
         self.play(Rotate(VGroup(span2, eigenvector2_copy), 
-                         angle=PI*0.85242, run_time=2, 
+                         angle=PI*0.85242, run_time=1.5, 
                          about_point=number_plane_copy2.c2p(0, 0)))
         self.wait(1)
 
@@ -369,10 +369,9 @@ class Solution38(Scene):
                          angle=PI*0.14758, run_time=2, 
                          about_point=number_plane_copy2.c2p(0, 0)))
         self.play(FadeOut(span_label2,eigenvector2_copy,span2))
-        self.play(Create(description2[4],run_time=2))
-        self.wait(0.5)
-        
-        self.play(Create(description2[5],run_time=2),
+        self.play(Create(description2[4],run_time=1))
+        self.wait(0.3)
+        self.play(Create(description2[5],run_time=1),
                   ReplacementTransform(number_plane_copy2, transformed_plane_copy2),
                   ReplacementTransform(eigenvector1_copy2,VGroup(transformed_eigenvector1,transformed_eigenvector2)))
         self.wait(2)
@@ -384,6 +383,26 @@ class Solution38(Scene):
                         span_label1,
                         span1))
         #OLD PART -----------------------------------------------------------------------------------------------
+        text_break = VGroup(
+            MathTex(r"\text{Let's go back to the original question:}", 
+                    color=LIGHT_GRAY, font_size=size_font),
+            MathTex(r"\text{If a } nxn \text{ square matrix has } n \text{ different eigenvalues}", 
+                    color=WHITE, font_size=size_font),
+           MathTex(r"\text{is it diagonalizable?}", 
+                    color=WHITE, font_size=size_font),
+        ).arrange(DOWN)
+        text_break[1:].shift(0.5*DOWN)
+
+        # Animation
+        self.wait(1)
+        self.play(Create(text_break[0], run_time = 1))
+        self.wait(1)
+        self.play(Create(text_break[1], run_time = 1.5))
+        self.wait(0.5)
+        self.play(Create(text_break[2], run_time = 1))
+        self.wait(2)
+        self.play(FadeOut(text_break))
+       
         geometric = VGroup(
             MathTex(r"\text{geometric multiplicity}", 
                     color=fourth_color, font_size=size_font),
@@ -484,7 +503,9 @@ class Solution38(Scene):
         
         VGroup(solution[3:4],
                box_geometric,additional_text_geometric,
-               box_algebraic,additional_text_algebraic).to_edge(UP)
+               box_algebraic,additional_text_algebraic,
+               inequality[0], inequality[2], inequality[4],
+               inequality2[0], inequality2[2], inequality2[4]).to_edge(UP)
         VGroup(solution[0], solution[1],
                solution2[0], solution2[1]).to_edge(DOWN)
         # Animation
