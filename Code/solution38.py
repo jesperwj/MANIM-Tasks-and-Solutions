@@ -97,7 +97,7 @@ class Solution38(Scene):
         limit = [3,2]
         number_plane = NumberPlane(
             x_range=[-limit[0], limit[0], 1],  # Set the x-axis range (min, max, step)
-            y_range=[-limit[1]-1, limit[1]+1, 1],  # Set the y-axis range (min, max, step)
+            y_range=[-limit[1], limit[1], 1],  # Set the y-axis range (min, max, step)
             axis_config={"stroke_color": WHITE},  # Customize axis color
             background_line_style={
                 "stroke_color": BLUE,  # Grid color
@@ -111,32 +111,26 @@ class Solution38(Scene):
         eigenvalues, eigenvectors = np.linalg.eig(skew_matrix)
         [lambda2, lambda1] = eigenvalues
         two, one = eigenvectors[:, 0], eigenvectors[:, 1]
+        transformed_plane = number_plane.copy().apply_matrix(skew_matrix)
 
-        matrix_example = VGroup(
-            MathTex(r"A = \begin{bmatrix} 1 & 1 \\ 0 & 1.5 \end{bmatrix}", 
-                    font_size=35, color=LIGHT_GRAY),
-            MathTex(r"\lambda_1 = 1.5 ,  \lambda_2 = 1", 
-                    font_size=35, color=LIGHT_GRAY),
-            MathTex(r"v_1 = \begin{bmatrix} 2 \\ 1 \end{bmatrix} ,  v_2 = \begin{bmatrix} 1 \\ 0 \end{bmatrix}", 
-                    font_size=35, color=LIGHT_GRAY)
-        ).arrange(DOWN).shift(RIGHT*1.5+UP*0.8).scale(0.7)
-
-        transformed_plane = NumberPlane(
-            x_range=[-limit[0], limit[0], 1],  # Set the x-axis range (min, max, step)
-            y_range=[-limit[1], limit[1], 1],  # Set the y-axis range (min, max, step)
-            axis_config={"color": BLUE,"stroke_color": WHITE},  # Customize axis color
-            background_line_style={
-                "stroke_color": BLUE,  # Grid color
-                "stroke_width": 1,
-                "stroke_opacity":0.5, 
-            }).scale(0.7).apply_matrix(skew_matrix).set_z_index(-1)
-        
         # Move all down
-        VGroup(number_plane,transformed_plane).to_corner(DR, buff = 0.3).shift(0.5*UP).shift(LEFT)
+        VGroup(number_plane,transformed_plane).to_corner(DR, buff = 0.3).shift(LEFT)
         transformed_plane_copy = transformed_plane.copy()
         transformed_plane_copy2 = transformed_plane.copy()   
         number_plane_copy = number_plane.copy()
         number_plane_copy2 = number_plane.copy()
+
+        matrix_example = VGroup(
+            MathTex(r"A = \begin{bmatrix} 1 & 1 \\ 0 & 1.5 \end{bmatrix}", 
+                    font_size=35, color=LIGHT_GRAY),
+            VGroup(
+                MathTex(r"\lambda_1 = 1.5 ,  \lambda_2 = 1", 
+                    font_size=35, color=LIGHT_GRAY),
+                MathTex(r"v_1 = \begin{bmatrix} 2 \\ 1 \end{bmatrix} ,  v_2 = \begin{bmatrix} 1 \\ 0 \end{bmatrix}", 
+                    font_size=35, color=LIGHT_GRAY)
+                    ).arrange(DOWN, aligned_edge = LEFT)
+        ).arrange(RIGHT, buff = 1.1).next_to(number_plane,UP).scale(0.7).shift(0.4*UP+0.3*RIGHT)
+        
 
         # Eigenvectors
         eigenvector1 = Arrow(start=number_plane.c2p(0, 0), end=number_plane.c2p(2,1), color=YELLOW, buff=0)
@@ -208,6 +202,7 @@ class Solution38(Scene):
         self.play(ReplacementTransform(number_plane, transformed_plane),
                   ReplacementTransform(eigenvector1,transformed_eigenvector1),
                   ReplacementTransform(eigenvector_label1,transformed_label1))
+        
         self.play(Indicate(transformed_label1,scale_factor = 1.2))
         self.wait(1)
         self.play( ReplacementTransform(transformed_label1,transformed_label11))
