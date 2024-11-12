@@ -1,18 +1,33 @@
 from manim import *
 import numpy as np
 import math
-
+from scipy.integrate import quad
+from pydub import AudioSegment
 
 class Solution38(Scene):
     def construct(self):
+        #___________________________________________________________________________
+        # Music setup 
 
+        # Parameters
+        music_volume = 0.7
+        audio_path = "music/tranquil-moments-195462.mp3"
+        desired_duration = 156 * 1000  # 10 seconds in milliseconds
+        fade_out_duration = 2 * 1000  # 2 seconds fade-out
+
+        # Load and trim the audio to the desired duration, then apply fade-out
+        audio_segment = AudioSegment.from_file(audio_path)
+        trimmed_audio = audio_segment[:desired_duration].fade_out(fade_out_duration)
+        trimmed_audio.export("music/trimmed_fadeout_manim_song.mp3", format="mp3")
+        self.add_sound("music/trimmed_fadeout_manim_song.mp3", time_offset=1, gain=music_volume)
+        
         # Color scheme set up
         first_color = WHITE
         second_color = LIGHT_GRAY
         third_color = BLUE
         fourth_color = ORANGE
         size_font =  DEFAULT_FONT_SIZE*0.75
-        
+        #_________________________________________________________________________________
         question = VGroup( 
                 MathTex(r"\text{If a } n \times n \text{ square matrix has } n \text{ different eigenvalues}", 
                     color=first_color, font_size=size_font),
@@ -217,7 +232,7 @@ class Solution38(Scene):
         self.play(ReplacementTransform(transformed_plane, number_plane_copy),
                   ReplacementTransform(transformed_eigenvector1,eigenvector1_copy),
                   ReplacementTransform(transformed_label11,eigenvector_label1_copy))
-        self.wait(1)
+        self.wait(0.5)
 
         description1 = VGroup(
             MathTex(r"\text{Let's consider a generic matrix A of size } n \times n, \text{with eigenvalues } \lambda_1,\lambda_2,...\lambda_n. ", 
@@ -363,7 +378,7 @@ class Solution38(Scene):
         self.play(Create(description2[5],run_time=1),
                   ReplacementTransform(number_plane_copy2, transformed_plane_copy2),
                   ReplacementTransform(eigenvector1_copy2,VGroup(transformed_eigenvector1,transformed_eigenvector2)))
-        self.wait(2)
+        self.wait(1)
         self.play(FadeOut(title,
                         description0[0],
                         description2[1::],
@@ -389,7 +404,7 @@ class Solution38(Scene):
         self.play(Create(text_break[1], run_time = 1.5))
         self.wait(0.5)
         self.play(Create(text_break[2], run_time = 1))
-        self.wait(2)
+        self.wait(1.5)
         self.play(FadeOut(text_break))
        
         geometric = VGroup(
@@ -515,7 +530,7 @@ class Solution38(Scene):
 
         # Additional explenation on geometric multiplicity
         self.play(Create(box_geometric,run_time = 1))
-        self.wait(0.8)
+        self.wait(0.5)
         self.play(Create(additional_text_geometric[1]))
         self.wait(0.5)
         self.play(Create(additional_text_geometric[2]))
@@ -527,7 +542,7 @@ class Solution38(Scene):
 
         # Additional explenation on algebraic multiplicity
         self.play(Create(box_algebraic, run_time = 1))
-        self.wait(0.8)
+        self.wait(0.5)
         self.play(Create(additional_text_algebraic[1]))
         self.wait(0.5)
         self.play(Create(additional_text_algebraic[2]))
@@ -539,9 +554,9 @@ class Solution38(Scene):
 
         # Animating text
         self.play(Create(solution[0],run_time = 2))
-        self.wait(2)
+        self.wait(1.5)
         self.play(Create(solution[1],run_time = 2))
-        self.wait(2)
+        self.wait(1.5)
         self.play(GrowFromCenter(inequality[4]))
         self.play(Indicate(inequality[4], color = WHITE))
 
@@ -554,15 +569,15 @@ class Solution38(Scene):
         self.play(FadeOut(inequality[0]))
         inequality[4][0][-2].shift(2.7*LEFT)
         self.play( Transform(inequality[2],inequality[4][0][-2]))
-        self.wait(2)
-        self.play(Uncreate(solution[0:2]))
+        self.wait(1.5)
+        self.play(FadeOut(solution[0:2]))
         self.wait(1.5)
 
         #Adding text 
         self.play(Create(solution2[0]))
         self.wait(2)
         self.play(Create(solution2[1]))
-        self.wait(6)
+        self.wait(4)
         self.play(FadeOut(solution2, inequality[1],inequality[4],inequality[2],
                           additional_text_geometric,
                           box_geometric,
