@@ -12,14 +12,14 @@ class convolution(Scene):
         # Parameters
         music_volume = 0.7
         audio_path = "music/convo.mp3"
-        desired_duration = 15 * 1000  # 10 seconds in milliseconds
+        desired_duration = 13 * 1000  # 10 seconds in milliseconds
         fade_out_duration = 2 * 1000  # 2 seconds fade-out
 
         # Load and trim the audio to the desired duration, then apply fade-out
         audio_segment = AudioSegment.from_file(audio_path)
         trimmed_audio = audio_segment[:desired_duration].fade_out(fade_out_duration)
         trimmed_audio.export("music/trimmed_fadeout_manim_song.mp3", format="mp3")
-        self.add_sound("music/trimmed_fadeout_manim_song.mp3", time_offset=1, gain=music_volume)
+        self.add_sound("music/trimmed_fadeout_manim_song.mp3", time_offset=0, gain=music_volume)
         
         # Color scheme set up
         first_color = WHITE
