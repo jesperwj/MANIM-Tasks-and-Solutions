@@ -39,45 +39,44 @@ class convolution(Scene):
         # Set limits
         limit_x1 = [-5, 5]  # Adjust these values as needed
         limit_y1 = [-2, 2]
-
+        selected_ticks = np.arange(limit_x1[0], limit_x1[1] + 0.1, 0.5).tolist()
         # Create axes with extended lengths and tick configuration
         axes1 = Axes(
-            x_range=[limit_x1[0], limit_x1[1], 0.5],  
+            x_range=[limit_x1[0], limit_x1[1], 0.25],  
             y_range=[limit_y1[0], limit_y1[1]+1, 1],
-            axis_config={"color": second_color, "include_ticks": True},
+            axis_config={"color": second_color,"include_ticks": True},
             x_length=14 ,  
             y_length=2.85,  
             tips=False,  
         ).to_edge(UP, buff= 0)
-
         axes2 = Axes(
-            x_range=[limit_x1[0], limit_x1[1], 0.5],  
+            x_range=[limit_x1[0], limit_x1[1], 0.25],  
             y_range=[limit_y1[0], limit_y1[1], 1],
-            axis_config={"color": second_color, "include_ticks": True},
+            axis_config={"color": second_color,"include_ticks": True},
             x_length=14 ,  
             y_length=2.28,  
             tips=False,  
         ).next_to(axes1,DOWN, buff = 0)
         axes3 = Axes(
-            x_range=[limit_x1[0], limit_x1[1], 0.5],  
+            x_range=[limit_x1[0], limit_x1[1], 0.25],  
             y_range=[limit_y1[0]-1, limit_y1[1], 1],
-            axis_config={"color": second_color, "include_ticks": True},
+            axis_config={"color": second_color,"include_ticks": True},
             x_length=14 ,  
             y_length=2.85,  
             tips=False,  
         ).next_to(axes2,DOWN, buff = 0)
         #axes3 = axes2.copy().next_to(axes2,DOWN, buff = 0)
         label1 = VGroup(
-            MathTex(r"u(-t+\tau)", 
+            MathTex(r"u(t)", 
                     color=function1_color, font_size=size_font*0.9),
-            MathTex(r"h(t)",
+            MathTex(r"h(-t+\tau)",
                     color=function2_color, font_size=size_font*0.9)
             ).arrange(LEFT, center=False, buff = 6.6)
         labels = VGroup(
             label1,
-            MathTex(r"\text{Product:  } h(t) \cdot u(-t+\tau)", 
+            MathTex(r"\text{Product:  } u(t) \cdot h(-t+\tau)", 
                     color=fifth_color, font_size=size_font*0.9),
-            MathTex(r"\text{Convolution:  }y(t) = \int_{-\infty}^\infty h(\tau) u(t - \tau) \, d\tau", 
+            MathTex(r"\text{Convolution:  }y(t) = \int_{-\infty}^\infty u(\tau) h(t - \tau) \, d\tau", 
                     color=third_color, font_size=size_font*0.9)
         ).arrange(DOWN, center=False, aligned_edge=LEFT,buff=2).to_corner(UL,buff=0.6)
         labels[2].shift(0.2*UP)
