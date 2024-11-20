@@ -6,13 +6,13 @@ from pydub import AudioSegment
 
 class convolution(Scene):
     def construct(self):
-        #___________________________________________________________________________
+         #___________________________________________________________________________
         # Music setup 
 
         # Parameters
         music_volume = 0.7
         audio_path = "music/convo.mp3"
-        desired_duration = 13 * 1000  # 10 seconds in milliseconds
+        desired_duration = 19 * 1000  # 10 seconds in milliseconds
         fade_out_duration = 2 * 1000  # 2 seconds fade-out
 
         # Load and trim the audio to the desired duration, then apply fade-out
@@ -25,211 +25,204 @@ class convolution(Scene):
         first_color = WHITE
         second_color = GRAY_C
 
-        #Poles colors 
-        third_color = YELLOW
-        fourth_color = BLUE
-        fifth_color = RED
+        # Poles colors
+        third_color = ORANGE
+        function2_color = BLUE
+        fifth_color = PINK
+        function1_color = GREEN
 
-        fill_color = RED 
-        
+        fill_color = RED
+
         # Default font
-        size_font =  DEFAULT_FONT_SIZE*0.75
+        size_font = DEFAULT_FONT_SIZE * 0.75
 
         # Set limits
-        limit_x1 = [-7, 7]  # Adjust these values as needed
-        limit_y1 = [-1.5, 5]
+        limit_x1 = [-5, 5]  # Adjust these values as needed
+        limit_y1 = [-2, 2]
 
         # Create axes with extended lengths and tick configuration
         axes1 = Axes(
-            x_range=[limit_x1[0], limit_x1[1], 1],  # Adjust tick spacing as needed
+            x_range=[limit_x1[0], limit_x1[1], 0.5],  
+            y_range=[limit_y1[0], limit_y1[1]+1, 1],
+            axis_config={"color": second_color, "include_ticks": True},
+            x_length=14 ,  
+            y_length=2.85,  
+            tips=False,  
+        ).to_edge(UP, buff= 0)
+
+        axes2 = Axes(
+            x_range=[limit_x1[0], limit_x1[1], 0.5],  
             y_range=[limit_y1[0], limit_y1[1], 1],
             axis_config={"color": second_color, "include_ticks": True},
-            x_length=14,  # Full width minus padding
-            y_length=8,  # Full height minus padding
-            tips=False,  # Turn off axis tips
-        )
-        labels1 = axes1.get_axis_labels(x_label=r"\text{t}", y_label=r"\text{y(t)}").set_color(second_color).scale(0.9)
-        axes2 = axes1.copy().shift(2*UP)
-                             
-        title1 = MathTex(r"\text{Pole placement in s-domain}", 
-                    color=second_color, font_size=size_font*1.1).next_to(axes1, UP).shift(0.7*UP)
-        
-        text1 = VGroup(
-                    MathTex(r"x(t) = e^{-\frac{t}{2}u(t)}", 
-                            color=third_color, font_size=size_font),
-                    MathTex(r"h(t) = u(t) - u(t-2)}", 
-                        color=fourth_color, font_size=size_font)
-                ).arrange(DOWN).to_edge(UP, buff = 1).shift(4*RIGHT)
-        
-        text2 = VGroup(
-                    MathTex(r"x(\tau) = e^{-\frac{\tau}{2}u(\tau)}", 
-                            color=third_color, font_size=size_font),
-                    MathTex(r"h(\tau) = u(\tau) - u(\tau-2)}", 
-                        color=fourth_color, font_size=size_font)
-                ).arrange(DOWN).to_edge(UP, buff = 1).shift(4*RIGHT)
-        
-        text3 = VGroup(
-                    MathTex(r"x(\tau) = e^{-\frac{\tau}{2}u(\tau)}", 
-                            color=third_color, font_size=size_font),
-                    MathTex(r"h(-\tau) = u(-\tau) - u(-\tau-2)}", 
-                        color=fourth_color, font_size=size_font)
-                ).arrange(DOWN).to_edge(UP, buff = 1).shift(4*RIGHT)
-        
-        text4 = VGroup(
-                    MathTex(r"x(\tau) = e^{-\frac{\tau}{2}u(\tau)}", 
-                            color=third_color, font_size=size_font),
-                    MathTex(r"h(t-\tau) = u(t-\tau) - u(t-\tau-2)}", 
-                        color=fourth_color, font_size=size_font)
-                ).arrange(DOWN).to_edge(UP, buff = 0.3).shift(4*RIGHT)
-        
-        instructions = VGroup(
-            MathTex(r"y(t) = \int_{-\infty}^{\infty} x(\tau) \, u(t - \tau) \, d\tau", 
-                    color=first_color, font_size=size_font),
-            MathTex(r"\text{Step 1: } t \rightarrow \tau", 
-                    color=first_color, font_size=size_font),
-            MathTex(r"\text{Step 2: } h(\tau) \rightarrow h(-\tau)", 
-                    color=first_color, font_size=size_font),
-            MathTex(r"\text{Step 3: Sliding window}", 
-                    color=first_color, font_size=size_font),
-        ).arrange(DOWN, aligned_edge = LEFT).to_corner(UL, buff = 0.3).shift(RIGHT)
-        instructions[1:].shift(0.1*DOWN+0.5*RIGHT)
-        
-        box = Rectangle(
-            height=instructions[0].get_height()+0.3, 
-            width=instructions[0].get_width()+0.3, 
-            fill_color=None, 
-            fill_opacity=0.0, 
-            stroke_color=second_color).move_to(instructions[0])
-
-
-        # Drawing poles and their impulse responses
+            x_length=14 ,  
+            y_length=2.28,  
+            tips=False,  
+        ).next_to(axes1,DOWN, buff = 0)
+        axes3 = Axes(
+            x_range=[limit_x1[0], limit_x1[1], 0.5],  
+            y_range=[limit_y1[0]-1, limit_y1[1], 1],
+            axis_config={"color": second_color, "include_ticks": True},
+            x_length=14 ,  
+            y_length=2.85,  
+            tips=False,  
+        ).next_to(axes2,DOWN, buff = 0)
+        #axes3 = axes2.copy().next_to(axes2,DOWN, buff = 0)
+        label1 = VGroup(
+            MathTex(r"u(-t+\tau)", 
+                    color=function1_color, font_size=size_font*0.9),
+            MathTex(r"h(t)",
+                    color=function2_color, font_size=size_font*0.9)
+            ).arrange(LEFT, center=False, buff = 6.6)
+        labels = VGroup(
+            label1,
+            MathTex(r"\text{Product:  } h(t) \cdot u(-t+\tau)", 
+                    color=fifth_color, font_size=size_font*0.9),
+            MathTex(r"\text{Convolution:  }y(t) = \int_{-\infty}^\infty h(\tau) u(t - \tau) \, d\tau", 
+                    color=third_color, font_size=size_font*0.9)
+        ).arrange(DOWN, center=False, aligned_edge=LEFT,buff=2).to_corner(UL,buff=0.6)
+        labels[2].shift(0.2*UP)
+        # Signal parameters
         omega = 5
         alpha = -1/2
         beta = 0.2
 
-        # Creating the signals
+        # Define the signals
         def signal_0(t, start=0, length=2):
-            if t < 0:
-                return 0
-            else:
-                return math.exp(alpha*t)
+            return math.exp(alpha * t) if t >= 0 else 0
+
         def signal_1(t, start=0, length=2):
-            if t < 0:
-                return 0
-            else:
-                return math.cos(omega*t)
+            return math.cos(omega * t) if t >= 0 else 0
+
         def signal_2(t, start=0, length=2):
-            if t < 0:
-                return 0
-            else:
-                return math.exp(alpha*t)*math.cos(omega*t)
+            return math.exp(alpha * t) * math.cos(omega * t) if t >= 0 else 0
+
         def signal_3(t, start=0, length=2):
-            if t < 0:
-                return 0
-            else:
-                return math.exp(beta*t)*math.cos(omega*t)
-            
-        def signal_4(t, start=0, length = 2):
-            if t < start:
-                return 0
-            elif t < start+length:
-                return 1
-            else:
-                return 0
+            return math.exp(beta * t) * math.cos(omega * t) if t >= 0 else 0
 
-        # Generating singnals 
-
-        impulse_response1 = make_signal_on_axes(signal_0, axes1, third_color, limit_x1)
-
-        window_function = make_signal_on_axes(signal_4, axes1, 
-                                              fourth_color, 
-                                              limit_x1, 
-                                              start=0)
+        def signal_4(t, start=0, length=2):
+            return 1 if start <= t < start + length else 0
         
-        # Adding to scene
-        self.add(axes1, axes2.x_axis,
-                 title1, 
-                 labels1)
-        self.add(instructions, box)
-        self.add(text4)
-        self.add(impulse_response1)
+        def flip_signal(func):
+            return lambda t: func(-t)
         
+        def convolution_function(t):
+            return np.interp(t, x_values, y_values)
+        
+        def custom_rate_func(self, t):
+            if t < 0.5:  # First half: Slow down for tau [0, 2.5]
+                return (t / 0.5) ** 0.5 * 2.5 / 5  # Ease-out
+            else:  # Second half: Speed up for tau [2.5, 5]
+                return 2.5 / 5 + ((t - 0.5) / 0.5) ** 2 * 2.5 / 5  # Ease-in
+        # --------------------------> CHOICE OF FUNCTION <-----------------------------
+        function1 = signal_1
+        function2 = signal_1
+        function2_flipped = flip_signal(function2)
 
-        # Sliding window
-        window_start_tracker = ValueTracker(-5)  
+        x_values, y_values = calculate_convolution_values(function1, function2, limit_x1)
+        function_convolution = convolution_function
+        conv_graph = create_graph(function_convolution, axes3, third_color, limit_x1)
 
-        window_function_graph = always_redraw(lambda: make_signal_on_axes(
-            signal_4,
-            axes1,
-            fourth_color,
-            limit_x1,
-            start=window_start_tracker.get_value(),
-            length=2
-        ))
-        integral_graph = always_redraw(lambda: create_integral_graph(
-                    window_start_tracker.get_value(), 
-                    axes2, 
-                    signal_0,
-                    limit_x1
-                    ))
-        area_between_graphs = always_redraw(lambda: get_clipped_area_under_graph(
-            axes1,
-            signal_0,  # Impulse response function
-            window_start_tracker.get_value(),  # Start of the window
-            window_start_tracker.get_value() + 2,  # End of the window
-            color=fill_color
+        # Create ValueTracker for tau
+        time_tracker = ValueTracker(-2)
+
+        # Create Function 1 graph
+        function1_graph = create_graph(function1, axes1, GREEN, limit_x1)
+        
+        # Create Function 2 flipped graph
+        function2_graph = VMobject(color=function2_color)
+        update_function2_graph(function2_graph, function2_flipped, axes1, limit_x1, tau_value=-2)
+        
+        # Create product graph
+        product_graph = always_redraw(lambda: axes2.plot(
+            lambda t: function1(t) * function2_flipped(t - time_tracker.get_value()), 
+            x_range=limit_x1, 
+            color=fifth_color, 
+            use_smoothing=False
         ))
 
-        # Add to scene
-        self.add(window_function_graph)
-        self.add(area_between_graphs)
-        self.add(integral_graph)
-        self.play(window_start_tracker.animate.set_value(5), run_time=10, rate_func=linear)
-        self.wait(3)
+
+        # Adding to the scene 
+        self.add(axes1, axes2, axes3, labels)
+        self.add(function2_graph,function1_graph)
+        self.add(conv_graph)
+        self.add(product_graph)
+        
+        # Updaters ---------------------------------------------------------
+        
+        # Slide function2
+        function2_graph.add_updater(
+            lambda m: update_function2_graph(m, function2_flipped, axes1, limit_x1, time_tracker.get_value())
+        )
+        # Dynamic shading for the product area
+        shaded_area = always_redraw(lambda: axes2.get_area(
+            product_graph, x_range=[limit_x1[0], 
+                                    time_tracker.get_value()], 
+                                    color=third_color, 
+                                    opacity=0.5
+        )).set_z_index(-1)
+        self.add(shaded_area)
+
+        # Update convolution
+        def update_graph(graph):
+            tau = time_tracker.get_value()  # Get the value of the time tracker
+            updated_y_values = np.array([function_convolution(t) for t in x_values[x_values<tau]])
+            points = [axes3.c2p(x_values[i], updated_y_values[i]) for i in range(len(x_values[x_values<tau]))]
+            graph.set_points_as_corners(points)
+        conv_graph.add_updater(update_graph)
+
+        # Animate time_tracker 
+        self.play(time_tracker.animate.set_value(5), run_time=15, rate_func=linear)
+        self.wait(2)
+        
+        
 
 
+# Function to flip a signal
+def flip_signal(func):
+    return lambda t: func(-t)
 
+
+# Function to find convolution function
 def calculate_integral(func, start, end):
-            integral_value, _ = quad(func, start, end)
-            return integral_value
-        
-def create_integral_graph(start, axes2, signal_0,limit_x):
-    end = start + 2  # The window length is 2 units
+    integral_value, _ = quad(func, start, end)
+    return integral_value
 
-    # Create a graph showing how the integral value changes over time
-    x_values = np.linspace(limit_x[0]+2, end, 100)
-    integral_values = [calculate_integral(signal_0, t-2, t) for t in x_values]
+def calculate_convolution_values(signal_1, signal_2, limit_x):
+    # Generate x values for the convolution graph up to the current value of tau
+    x_values = np.linspace(limit_x[0], limit_x[1], 1000)
+    y_values = []
 
-    # Create the graph for the integral function
-    integral_graph = VMobject()
-    points = [axes2.c2p(x_values[i], integral_values[i]) for i in range(len(x_values))]
-    integral_graph.set_points_as_corners(points)
-    integral_graph.set_color(RED)
-    return integral_graph
-        
+    # Calculate convolution for x values
+    for t in x_values:
+        # Define the convolution integral dynamically
+        convolution = lambda x: signal_1(t - x) * signal_2(x)
+        integral_value = calculate_integral(convolution, limit_x[0], limit_x[1])  
+        y_values.append(integral_value)
+    
+    return x_values, y_values  # Return both x and y values for proper interpolation
 
-def make_signal_on_axes(function,axes_name,color, limit_x, start=0, length=2):
+def update_function2_graph(graph, function, axes, limit_x, tau_value):
+    t_values = np.linspace(limit_x[0], limit_x[1], 1000)
+    function_values = [function(t - tau_value) for t in t_values]
+    points = [axes.c2p(t, function_values[i]) for i, t in enumerate(t_values)]
+    graph.set_points_as_corners(points)
+
+# Create stationary graph
+def create_graph(function, axes_name, color, limit_x):
     num_points = 1000
     t_values = np.linspace(limit_x[0], limit_x[1], num=num_points)
-
-    # Generate points for each function
-    signal_values = np.array([function(t, start, length) for t in t_values])
+    signal_values = np.array([function(t) for t in t_values])
     graph = VMobject()
     points = [axes_name.c2p(t_values[i], signal_values[i]) for i in range(num_points)]
     graph.set_points_as_corners(points)
     graph.set_color(color)
-
     return graph
 
-def get_clipped_area_under_graph(axes, func, start, end, color=GREEN, opacity=0.4):
-    num_points = 100
-    x_values = np.linspace(start, end, num_points)
-    points = [axes.c2p(x, func(x)) for x in x_values]  # Points for the function graph
-    x_axis_points = [axes.c2p(x, 0) for x in reversed(x_values)]  # Reversed x-axis points for closing the area
+def update_product_graph(graph, function1, function2_flipped, axes, color, limit_x, tau_value):
+    t_values = np.linspace(limit_x[0], limit_x[1], 1000)
+    product_values = [function1(t) * function2_flipped(t - tau_value) for t in t_values]
+    points = [axes.c2p(t, product_values[i]) for i, t in enumerate(t_values)]
+    graph.set_points_as_corners(points)
+    graph.set_color(color)
 
-    # Create the area object and fill with color
-    area = VMobject()
-    area.set_points_as_corners(points + x_axis_points)
-    area.set_fill(color, opacity=opacity)
-    area.set_stroke(width=0)  # No stroke
-    return area
+
