@@ -1,5 +1,11 @@
 # MANIM Tasks and Solutions
 
+Convolution
+
+
+https://github.com/user-attachments/assets/c1b866d0-f9c4-4a74-9216-14ea1f3355d4
+
+
 Question 1
 
 https://github.com/user-attachments/assets/1fc706d0-4a83-4cff-9ed1-670778accd24
