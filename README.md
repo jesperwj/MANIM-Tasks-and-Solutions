@@ -3,7 +3,7 @@
 Convolution
 
 
-https://github.com/user-attachments/assets/a2cd17c7-5362-4904-8ecb-e02d179f87e3
+https://github.com/user-attachments/assets/b8835887-8d97-49ae-8dcb-734a38bd3599
 
 
 Question 1
