@@ -7,11 +7,12 @@ from pydub import AudioSegment
 class Convolution2(Scene):
     def construct(self):
         # =========================== Setup ===================================
-        #elf.setup_audio()
+        self.setup_audio()
         self.setup_constants()
         axes1, axes2, axes3 = self.create_axes()
         labels = self.create_labels()
-        
+        title = self.create_title()
+
         # =========================== Signals =================================
         function1 = self.signal_cosine
         function2 = self.signal_cosine
@@ -30,7 +31,7 @@ class Convolution2(Scene):
         shaded_area = self.create_shaded_area(axes2, product_graph, time_tracker).set_z_index(-1)
 
         # =========================== Scene ===================================
-        self.add(axes1, axes2, axes3, labels)
+        self.add(axes1, axes2, axes3, labels, title)
         self.add(function1_graph, function2_graph, product_graph, conv_graph, shaded_area)
         self.play(time_tracker.animate.set_value(self.limit_x[1]), run_time=15, rate_func=linear)
         self.wait(2)
@@ -82,16 +83,32 @@ class Convolution2(Scene):
                     color=self.colors["function1"], font_size=self.font_size),
             MathTex(r"h(-t+\tau)",
                     color=self.colors["function2"], font_size=self.font_size)
-            ).arrange(LEFT, center=False, buff = 6.6)
+            ).arrange(LEFT, center=False, buff = 6)
         labels = VGroup(
             label1,
             MathTex(r"\text{Product:  } u(t) \cdot h(-t+\tau)", 
                     color=self.colors["product"], font_size=self.font_size),
             MathTex(r"\text{Convolution:  }y(t) = \int_{-\infty}^\infty u(\tau) h(t - \tau) \, d\tau", 
                     color=self.colors["convolution"], font_size=self.font_size)
-        ).arrange(DOWN, center=False, aligned_edge=LEFT,buff=2).to_corner(UL,buff=0.6)
+        ).arrange(DOWN, center=False, aligned_edge=LEFT,buff=2).to_corner(UL,buff=0.7)
         labels[2].shift(0.2*UP)
+        labels.shift(1.75*DOWN)
         return labels
+    
+    def create_title(self):
+        title_text = MathTex(r"\text{Convolution Visualization}", 
+                             color=WHITE, font_size=self.font_size*1.2).set_z_index(2)
+        underline = Underline(title_text, color=self.colors["axes"]).set_stroke(width=2).set_z_index(2)
+        title_box = Rectangle(
+            width=title_text.width + 0.4,  
+            height=title_text.height + 0.27,
+            color=BLACK,  
+            fill_color=BLACK,  
+            fill_opacity=1  
+        ).move_to(title_text.get_center()).set_z_index(1)  
+        title = VGroup(title_box,underline,title_text).to_edge(UP, buff = 0)
+        self.add(title)
+        return title
 
     # =========================== Signal Functions ===========================
     def signal_cosine(self, t):
