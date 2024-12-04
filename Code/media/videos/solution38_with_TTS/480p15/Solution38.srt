@@ -1,0 +1,84 @@
+1
+00:00:01,000 --> 00:00:03,633
+If an N times N square matrix has
+
+2
+00:00:03,733 --> 00:00:07,692
+N distinct egienvalues, then it is diagonalizable
+
+3
+00:00:07,800 --> 00:00:11,540
+Which of the following answers is correct for this statement.
+
+4
+00:00:11,600 --> 00:00:19,108
+A, true. B, false. C, it depends. Or D, I don't know.
+
+5
+00:00:23,266 --> 00:00:25,494
+The correct answer is A
+
+6
+00:00:28,733 --> 00:00:32,198
+To understand why this is the correct answer, let
+
+7
+00:00:32,298 --> 00:00:35,545
+us take a look at Eigenvalues and Eigenvectors
+
+8
+00:00:36,666 --> 00:00:41,860
+Let's consider a generic matrix A of size N times N, with
+
+9
+00:00:41,960 --> 00:00:47,246
+eigenvalues lambda 1, lambda 2 all the way up to lambda N.
+
+10
+00:00:47,400 --> 00:00:50,948
+Let lambda I be a generic eigenvalue of A.
+
+11
+00:00:51,066 --> 00:00:55,214
+V I is the eigenvector corresponding tolambda I
+
+12
+00:01:01,866 --> 00:01:05,726
+so lambda I determines how V I stretches after
+
+13
+00:01:05,866 --> 00:01:08,358
+applying the transformation A.
+
+14
+00:01:20,466 --> 00:01:24,038
+Now consider a different eigenvalue lambda J
+
+15
+00:01:24,200 --> 00:01:27,268
+Where lambda J and lambda I are distinct
+
+16
+00:01:27,400 --> 00:01:31,932
+then let V J be the eigenvector corresponding to lambda J
+
+17
+00:01:49,066 --> 00:01:52,326
+Eigenvectors of two different eigenvalues
+
+18
+00:01:52,466 --> 00:01:55,126
+must be linearly independent.
+
+19
+00:02:08,133 --> 00:02:11,921
+One eigenvector cannot be associated to
+
+20
+00:02:12,066 --> 00:02:14,974
+two different eigenvalues, because it cannot
+
+21
+00:02:15,074 --> 00:02:17,366
+be stretched in two different ways.
+
